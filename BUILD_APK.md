@@ -17,6 +17,7 @@
 - Android Studio installed
 - Git installed
 - USB Debugging enabled on your phone (Settings → Developer Options → USB Debugging)
+- **Shizuku app installed** (Download from Play Store or GitHub)
 
 ## Steps to Build APK
 
@@ -66,7 +67,24 @@ npx cap open android
 3. Wait for build to complete
 4. Find the APK at: `android/app/build/outputs/apk/debug/app-debug.apk`
 
-### 9. Install on Your Phone
+### 9. Setup Shizuku (CRITICAL for overlay to work)
+
+**Before installing the APK:**
+1. Install Shizuku from Play Store: https://play.google.com/store/apps/details?id=moe.shizuku.privileged.api
+2. Open Shizuku app
+3. Grant ADB access to Shizuku:
+   - **Option A - Wireless ADB (easier):**
+     - Enable Wireless Debugging in Developer Options
+     - In Shizuku, tap "Pairing" 
+     - Follow on-screen instructions to pair
+   - **Option B - USB ADB:**
+     - Connect phone to computer via USB
+     - Run: `adb shell sh /storage/emulated/0/Android/data/moe.shizuku.privileged.api/start.sh`
+4. Keep Shizuku running in background (don't force stop)
+
+**Shizuku grants elevated permissions so overlay works over games!**
+
+### 10. Install on Your Phone
 
 **If Android Studio doesn't recognize your phone:**
 1. Enable Developer Options: Settings → About Phone → Tap "Build Number" 7 times
@@ -81,26 +99,28 @@ npx cap open android
 
 ## Important Notes
 
-### Overlay Permission
-When you first open the app, it will ask for "Display over other apps" permission. You must grant this, but **it has severe limitations**:
+### How It Works with Shizuku
 
-✅ **What Works:**
-- Permission request will show up
-- Filters work inside the app window
-- Can process screenshots/photos
-- Can test filter combinations
-- Floating toggle button works
+**With Shizuku running, this app WILL work over games!**
 
-❌ **What DOESN'T Work:**
-- **System-wide overlay over games** (Android blocks this)
-- **Overlay over any app** (security restriction)
-- Works only inside the app's own window
+✅ **What Works with Shizuku:**
+- System-wide overlay over ANY app including games
+- Shizuku bypasses Android 10+ restrictions
+- No root required (just ADB access for Shizuku)
+- All filter controls work in real-time
+- Floating toggle button works everywhere
 
-### Why Games Won't Work
-- Android 10+ blocks overlays over games for security
-- Games actively detect and block overlay apps
-- Requires root access + custom kernel for real system-wide filters
-- Battery drain and severe performance lag
+**Without Shizuku:**
+❌ Overlay only works inside the app window
+❌ Cannot overlay games or other apps
+
+### First Launch Steps:
+1. Make sure Shizuku is running (check Shizuku app)
+2. Open Visual Enhancer app
+3. App will detect Shizuku and request permission
+4. Grant Shizuku permission in the dialog
+5. Grant overlay permission when prompted
+6. Filters now work system-wide!
 
 ### Alternative Solutions
 1. **Root + Custom Kernel** - Requires rooting (voids warranty)
