@@ -4,6 +4,7 @@ import { ColorHighlight } from "@/components/ColorHighlight";
 import { PresetManager, FilterPreset } from "@/components/PresetManager";
 import { FloatingToggle } from "@/components/FloatingToggle";
 import { OverlayPermission } from "@/components/OverlayPermission";
+import { ShizukuManager } from "@/components/ShizukuManager";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import { Settings, Palette, Save } from "lucide-react";
 const Index = () => {
   const [enabled, setEnabled] = useState(true);
   const [overlayGranted, setOverlayGranted] = useState(false);
+  const [shizukuReady, setShizukuReady] = useState(false);
   const [contrast, setContrast] = useState(100);
   const [brightness, setBrightness] = useState(100);
   const [saturation, setSaturation] = useState(100);
@@ -95,7 +97,11 @@ const Index = () => {
 
       {/* Control Panel */}
       <div className="relative z-50 container max-w-2xl mx-auto p-6 space-y-6">
-        <OverlayPermission onPermissionGranted={() => setOverlayGranted(true)} />
+        <ShizukuManager onShizukuReady={setShizukuReady} />
+        
+        {shizukuReady && (
+          <OverlayPermission onPermissionGranted={() => setOverlayGranted(true)} />
+        )}
         
         <div className="text-center space-y-2 pt-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-glow bg-clip-text text-transparent">
