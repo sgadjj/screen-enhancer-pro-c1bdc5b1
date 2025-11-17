@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertCircle, CheckCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
+import Shizuku from "@/plugins/shizuku";
 
 export const ShizukuManager = ({ onShizukuReady }: { onShizukuReady: (ready: boolean) => void }) => {
   const [shizukuStatus, setShizukuStatus] = useState<'checking' | 'available' | 'unavailable' | 'granted'>('checking');
@@ -22,15 +23,26 @@ export const ShizukuManager = ({ onShizukuReady }: { onShizukuReady: (ready: boo
     setIsNative(true);
 
     try {
-      // Check if Shizuku is running
-      // In real implementation, this would call native code to check Shizuku status
-      const shizukuRunning = await checkShizukuService();
-      
-      if (shizukuRunning) {
-        setShizukuStatus('available');
+      const { installed } = await Shizuku.checkShizukuInstalled();
+      if (!installed) {
+        setShizukuStatus('unavailable');
+        onShizukuReady(false);
+        return;
+      }
+
+      const { running } = await Shizuku.checkShizukuRunning();
+      if (!running) {
+        setShizukuStatus('unavailable');
+        onShizukuReady(false);
+        return;
+      }
+
+      const { granted } = await Shizuku.checkShizukuPermission();
+      if (granted) {
+        setShizukuStatus('granted');
         onShizukuReady(true);
       } else {
-        setShizukuStatus('unavailable');
+        setShizukuStatus('available');
         onShizukuReady(false);
       }
     } catch (error) {
@@ -40,28 +52,26 @@ export const ShizukuManager = ({ onShizukuReady }: { onShizukuReady: (ready: boo
     }
   };
 
-  const checkShizukuService = async (): Promise<boolean> => {
-    // This would call native Android code to check Shizuku
-    // For now, simulate the check
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(true), 1000);
-    });
-  };
-
   const requestShizukuPermission = async () => {
     toast.info("Requesting Shizuku permission...");
     
     try {
-      // In real implementation, this would:
-      // 1. Check if Shizuku app is installed
-      // 2. Request permission through Shizuku API
-      // 3. Grant overlay permission with elevated access
+      const permissionResult = await Shizuku.requestShizukuPermission();
       
-      setTimeout(() => {
+      if (!permissionResult.granted) {
+        toast.error("Shizuku permission denied");
+        return;
+      }
+
+      const overlayResult = await Shizuku.grantOverlayPermission();
+      
+      if (overlayResult.granted) {
         setShizukuStatus('granted');
         onShizukuReady(true);
         toast.success("Shizuku permission granted! Overlay will work over games.");
-      }, 1500);
+      } else {
+        toast.error("Failed to grant overlay permission");
+      }
     } catch (error) {
       toast.error("Failed to get Shizuku permission");
       console.error(error);
