@@ -2,6 +2,7 @@
   "appId": "app.lovable.visualenhancer",
   "appName": "Visual Enhancer",
   "webDir": "dist",
+  "bundledWebRuntime": false,
   "server": {
     "url": "https://dd105fe9-d336-4b42-bfb6-264d425cfb1e.lovableproject.com?forceHideBadge=true",
     "cleartext": true
