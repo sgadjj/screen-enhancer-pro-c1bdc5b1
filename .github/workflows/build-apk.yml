@@ -42,15 +42,6 @@ jobs:
     - name: Sync Capacitor
       run: npx cap sync android
 
-    - name: Setup Gradle Wrapper
-      run: |
-        if [ ! -f android/gradlew ]; then
-          echo "Setting up Gradle Wrapper..."
-          cd android
-          gradle wrapper --gradle-version 8.0
-          cd ..
-        fi
-
     - name: Grant execute permission for gradlew
       run: chmod +x android/gradlew
 
