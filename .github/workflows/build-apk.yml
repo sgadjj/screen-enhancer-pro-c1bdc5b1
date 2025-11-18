@@ -33,16 +33,13 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
-    - name: Add Android platform
+    - name: Setup Capacitor
       run: |
-        npm install -g @capacitor/cli
         npx cap add android || echo "Android already added"
-
-    - name: Sync Capacitor
-      run: npx cap sync android
+        npx cap sync android
 
     - name: Grant execute permission for gradlew
-      run: chmod +x android/gradlew
+      run: chmod +x android/gradlew || echo "gradlew not found, will be created by Gradle"
 
     - name: Build APK
       working-directory: ./android
