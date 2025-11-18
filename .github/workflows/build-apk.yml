@@ -30,14 +30,18 @@ jobs:
     - name: Build web app
       run: npm run build
 
+    - name: Verify build output
+      run: |
+        echo "Checking dist directory..."
+        ls -la dist/
+        echo "Checking for index.html..."
+        test -f dist/index.html && echo "✓ index.html found" || echo "✗ index.html missing"
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
     - name: Install Capacitor CLI
       run: npm install -g @capacitor/cli
-
-    - name: Copy Capacitor config
-      run: cp capacitor.config.json capacitor.config.ts || true
 
     - name: Sync Capacitor to Android
       run: npx cap sync android
