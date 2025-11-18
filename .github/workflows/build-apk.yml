@@ -36,21 +36,17 @@ jobs:
     - name: Install Capacitor CLI
       run: npm install -g @capacitor/cli
 
-    - name: Setup Android platform
-      run: |
-        npx cap add android || true
-        npx cap update android
-        npx cap sync android
+    - name: Copy Capacitor config
+      run: cp capacitor.config.json capacitor.config.ts || true
 
-    - name: Verify and setup Gradle wrapper
-      run: |
-        if [ ! -f android/gradlew ]; then
-          echo "Error: Gradle wrapper not created by Capacitor"
-          echo "Android directory contents:"
-          ls -la android/ || echo "Android directory not found"
-          exit 1
-        fi
-        chmod +x android/gradlew
+    - name: Sync Capacitor to Android
+      run: npx cap sync android
+
+    - name: List Android directory
+      run: ls -la android/
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x android/gradlew
 
     - name: Build APK
       working-directory: ./android
