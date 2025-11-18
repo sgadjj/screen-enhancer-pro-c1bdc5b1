@@ -1,6 +1,6 @@
-# Visual Enhancer
+# Game Enhancer Pro
 
-Advanced screen filter and visual enhancement app for Android gaming, optimized for iPad and tablet gaming experience.
+تطبيق متقدم لتحسين العرض والفلاتر للألعاب على أندرويد، محسّن لتجربة الألعاب على iPad والأجهزة اللوحية.
 
 ## Features
 
