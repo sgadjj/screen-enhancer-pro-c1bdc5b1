@@ -45,8 +45,8 @@ jobs:
     - name: Check gradlew exists
       run: |
         if [ ! -f android/gradlew ]; then
-          echo "gradlew not found, generating..."
-          cd android && ./gradlew wrapper && cd ..
+          echo "gradlew not found, generating with system Gradle..."
+          cd android && gradle wrapper && cd ..
         fi
 
     - name: Grant execute permission for gradlew
