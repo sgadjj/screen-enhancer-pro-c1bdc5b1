@@ -1,4 +1,46 @@
-# Welcome to your Lovable project
+# Visual Enhancer
+
+Advanced screen filter and visual enhancement app for Android gaming, optimized for iPad and tablet gaming experience.
+
+## Features
+
+### 🎮 iPad Gaming Mode
+- Optimized landscape layout for tablets
+- Larger controls and better spacing
+- Responsive design for all screen sizes
+
+### 🎯 Draggable Target Icon
+- Animated crosshair overlay with pulsing effect
+- Fully draggable positioning
+- Easy hide/show toggle
+- Perfect for aiming practice
+
+### 🎨 Advanced Filter Controls
+- Contrast, Brightness, Saturation, Sharpness
+- Background Flattening mode
+- Real-time application
+
+### 🎯 Object-Specific Adjustments
+- Separate controls for moving objects
+- Independent stationary object settings
+- Optimized target visibility
+
+### 🌈 Color Enhancement
+- Adjustable color hue selector
+- Variable color intensity
+- Game visibility optimization
+
+### 💾 Preset Management
+- Save custom combinations
+- Quick-load settings
+- Preset management
+
+## Building APK
+
+See `BUILD_APK.md` and `FEATURES.md` for detailed instructions.
+
+### GitHub Actions
+Automated builds available in Actions tab after pushing to main branch.
 
 ## Project info
 

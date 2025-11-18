@@ -6,11 +6,13 @@ import { FloatingToggle } from "@/components/FloatingToggle";
 import { OverlayPermission } from "@/components/OverlayPermission";
 import { ShizukuManager } from "@/components/ShizukuManager";
 import { ObjectControls } from "@/components/ObjectControls";
+import { DraggableIcon } from "@/components/DraggableIcon";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Palette, Save, Gamepad2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Settings, Palette, Save, Gamepad2, Target } from "lucide-react";
 
 const Index = () => {
   const [enabled, setEnabled] = useState(true);
@@ -29,6 +31,9 @@ const Index = () => {
   const [movingColorIntensity, setMovingColorIntensity] = useState(0);
   const [stationaryBrightness, setStationaryBrightness] = useState(100);
   const [stationaryColorIntensity, setStationaryColorIntensity] = useState(0);
+  
+  // Draggable icon state
+  const [iconVisible, setIconVisible] = useState(false);
 
   const handleColorChange = (hue: number, intensity: number) => {
     setColorHue(hue);
@@ -124,9 +129,20 @@ const Index = () => {
         </div>
 
         <Card className="p-6 tablet:landscape:p-8">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
             <h2 className="text-2xl tablet:landscape:text-3xl font-semibold">Filter Controls</h2>
-            <Switch checked={enabled} onCheckedChange={setEnabled} />
+            <div className="flex items-center gap-4">
+              <Button
+                variant={iconVisible ? "default" : "outline"}
+                size="sm"
+                onClick={() => setIconVisible(!iconVisible)}
+                className="gap-2"
+              >
+                <Target className="h-4 w-4" />
+                {iconVisible ? "Hide" : "Show"} Target Icon
+              </Button>
+              <Switch checked={enabled} onCheckedChange={setEnabled} />
+            </div>
           </div>
 
           <Tabs defaultValue="filters" className="w-full">
@@ -230,6 +246,7 @@ const Index = () => {
           <p className="text-muted-foreground tablet:landscape:text-base">
             Adjust the filters above to see the effects in real-time. The object-specific controls let you 
             enhance moving targets separately from stationary backgrounds for optimal gaming performance.
+            Use the <span className="font-semibold text-primary">Target Icon</span> button to show a draggable animated crosshair for aiming practice.
           </p>
           <div className="grid grid-cols-3 tablet:landscape:grid-cols-6 gap-4 pt-4">
             <div className="h-24 tablet:landscape:h-32 bg-red-500 rounded-lg animate-pulse" />
@@ -243,6 +260,7 @@ const Index = () => {
       </div>
 
       <FloatingToggle enabled={enabled} onToggle={() => setEnabled(!enabled)} />
+      <DraggableIcon visible={iconVisible} onHide={() => setIconVisible(false)} />
     </div>
   );
 };
