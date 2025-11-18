@@ -5,11 +5,12 @@ import { PresetManager, FilterPreset } from "@/components/PresetManager";
 import { FloatingToggle } from "@/components/FloatingToggle";
 import { OverlayPermission } from "@/components/OverlayPermission";
 import { ShizukuManager } from "@/components/ShizukuManager";
+import { ObjectControls } from "@/components/ObjectControls";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Palette, Save } from "lucide-react";
+import { Settings, Palette, Save, Gamepad2 } from "lucide-react";
 
 const Index = () => {
   const [enabled, setEnabled] = useState(true);
@@ -22,6 +23,12 @@ const Index = () => {
   const [colorHue, setColorHue] = useState(0);
   const [colorIntensity, setColorIntensity] = useState(0);
   const [backgroundFlat, setBackgroundFlat] = useState(false);
+  
+  // Object-specific controls
+  const [movingBrightness, setMovingBrightness] = useState(100);
+  const [movingColorIntensity, setMovingColorIntensity] = useState(0);
+  const [stationaryBrightness, setStationaryBrightness] = useState(100);
+  const [stationaryColorIntensity, setStationaryColorIntensity] = useState(0);
 
   const handleColorChange = (hue: number, intensity: number) => {
     setColorHue(hue);
@@ -80,7 +87,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground tablet:landscape:px-8 tablet:landscape:py-6">
       {/* Filter Overlay */}
       {enabled && (
         <>
@@ -96,7 +103,7 @@ const Index = () => {
       )}
 
       {/* Control Panel */}
-      <div className="relative z-50 container max-w-2xl mx-auto p-6 space-y-6">
+      <div className="relative z-50 container max-w-2xl tablet:landscape:max-w-5xl mx-auto p-6 space-y-6">
         <ShizukuManager onShizukuReady={setShizukuReady} />
         
         {shizukuReady && (
@@ -104,20 +111,33 @@ const Index = () => {
         )}
         
         <div className="text-center space-y-2 pt-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-glow bg-clip-text text-transparent">
+          <h1 className="text-4xl tablet:landscape:text-5xl font-bold bg-gradient-to-r from-primary to-glow bg-clip-text text-transparent">
             Visual Enhancer
           </h1>
-          <p className="text-muted-foreground">
-            Advanced screen filter controls for enhanced visibility
+          <p className="text-muted-foreground tablet:landscape:text-lg">
+            Advanced screen filter controls for enhanced gaming visibility
           </p>
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <Gamepad2 className="h-5 w-5 text-primary" />
+            <span className="text-sm text-primary font-medium">iPad Gaming Mode</span>
+          </div>
         </div>
 
-        <Card className="p-6">
+        <Card className="p-6 tablet:landscape:p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl tablet:landscape:text-3xl font-semibold">Filter Controls</h2>
+            <Switch checked={enabled} onCheckedChange={setEnabled} />
+          </div>
+
           <Tabs defaultValue="filters" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4 tablet:landscape:text-base">
               <TabsTrigger value="filters">
                 <Settings className="h-4 w-4 mr-2" />
                 Filters
+              </TabsTrigger>
+              <TabsTrigger value="objects">
+                <Gamepad2 className="h-4 w-4 mr-2" />
+                Objects
               </TabsTrigger>
               <TabsTrigger value="color">
                 <Palette className="h-4 w-4 mr-2" />
@@ -176,6 +196,24 @@ const Index = () => {
               </div>
             </TabsContent>
 
+            <TabsContent value="objects" className="mt-6">
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Fine-tune brightness and color for moving targets and stationary elements separately.
+                </p>
+                <ObjectControls
+                  movingBrightness={movingBrightness}
+                  movingColorIntensity={movingColorIntensity}
+                  stationaryBrightness={stationaryBrightness}
+                  stationaryColorIntensity={stationaryColorIntensity}
+                  onMovingBrightnessChange={setMovingBrightness}
+                  onMovingColorChange={setMovingColorIntensity}
+                  onStationaryBrightnessChange={setStationaryBrightness}
+                  onStationaryColorChange={setStationaryColorIntensity}
+                />
+              </div>
+            </TabsContent>
+
             <TabsContent value="color" className="space-y-6 mt-6">
               <ColorHighlight onColorChange={handleColorChange} />
             </TabsContent>
@@ -187,16 +225,19 @@ const Index = () => {
         </Card>
 
         {/* Demo Content */}
-        <Card className="p-6 space-y-4">
-          <h2 className="text-xl font-semibold">Demo Content</h2>
-          <p className="text-muted-foreground">
-            Adjust the filters above to see the effects in real-time. This demo area shows how
-            the filters affect text, colors, and contrast.
+        <Card className="p-6 tablet:landscape:p-8 space-y-4">
+          <h2 className="text-xl tablet:landscape:text-2xl font-semibold">Gaming Preview</h2>
+          <p className="text-muted-foreground tablet:landscape:text-base">
+            Adjust the filters above to see the effects in real-time. The object-specific controls let you 
+            enhance moving targets separately from stationary backgrounds for optimal gaming performance.
           </p>
-          <div className="grid grid-cols-3 gap-4 pt-4">
-            <div className="h-24 bg-red-500 rounded-lg" />
-            <div className="h-24 bg-green-500 rounded-lg" />
-            <div className="h-24 bg-blue-500 rounded-lg" />
+          <div className="grid grid-cols-3 tablet:landscape:grid-cols-6 gap-4 pt-4">
+            <div className="h-24 tablet:landscape:h-32 bg-red-500 rounded-lg animate-pulse" />
+            <div className="h-24 tablet:landscape:h-32 bg-green-500 rounded-lg" />
+            <div className="h-24 tablet:landscape:h-32 bg-blue-500 rounded-lg animate-pulse" />
+            <div className="h-24 tablet:landscape:h-32 bg-yellow-500 rounded-lg" />
+            <div className="h-24 tablet:landscape:h-32 bg-purple-500 rounded-lg animate-pulse" />
+            <div className="h-24 tablet:landscape:h-32 bg-cyan-500 rounded-lg" />
           </div>
         </Card>
       </div>

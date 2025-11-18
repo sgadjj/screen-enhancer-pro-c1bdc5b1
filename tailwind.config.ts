@@ -5,6 +5,11 @@ export default {
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
+    screens: {
+      'tablet': '768px',
+      'laptop': '1024px', 
+      'desktop': '1280px',
+    },
     container: {
       center: true,
       padding: "2rem",
