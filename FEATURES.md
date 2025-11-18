@@ -1,4 +1,4 @@
-# Visual Enhancer Features
+# Game Enhancer Pro - مميزات التطبيق
 
 ## iPad Gaming Mode
 Optimized layout and controls for landscape iPad gaming experience with larger text and better spacing.

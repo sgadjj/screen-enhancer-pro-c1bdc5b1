@@ -1,6 +1,6 @@
 {
-  "appId": "app.lovable.visualenhancer",
-  "appName": "Visual Enhancer",
+  "appId": "app.lovable.gameenhancer",
+  "appName": "Game Enhancer Pro",
   "webDir": "dist",
   "bundledWebRuntime": false,
   "android": {
