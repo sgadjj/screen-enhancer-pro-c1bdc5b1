@@ -43,6 +43,12 @@ jobs:
     - name: Install Capacitor CLI
       run: npm install -g @capacitor/cli
 
+    - name: Remove existing Android directory
+      run: rm -rf android
+
+    - name: Add Android platform
+      run: npx cap add android
+
     - name: Sync Capacitor to Android
       run: npx cap sync android
 
