@@ -41,7 +41,7 @@ jobs:
       uses: android-actions/setup-android@v2
 
     - name: Sync Capacitor to Android
-      run: npx cap sync android
+      run: npx @capacitor/cli sync android
 
     - name: Generate Gradle wrapper
       working-directory: ./android
