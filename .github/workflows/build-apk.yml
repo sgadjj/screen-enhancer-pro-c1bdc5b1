@@ -43,45 +43,28 @@ jobs:
     - name: Install Capacitor CLI
       run: npm install -g @capacitor/cli
 
-    - name: Remove existing Android directory
-      run: rm -rf android
-
-    - name: Debug Capacitor config
+    - name: Setup Android platform
       run: |
-        echo "=== Capacitor Configuration ==="
-        cat capacitor.config.json
-        echo "=== Checking dist directory ==="
-        ls -la dist/ || echo "dist directory not found"
-        echo "=== Capacitor CLI version ==="
-        npx cap --version
-
-    - name: Add Android platform
-      run: |
-        echo "=== Adding Android platform ==="
-        npx cap add android --verbose
-        echo "=== Android directory after add ==="
-        ls -la android/ || echo "Android directory not created"
-        find android -name "gradlew" || echo "gradlew not found anywhere in android/"
+        if [ -d "android" ]; then
+          echo "Android directory exists in repo, updating..."
+          npx cap update android
+        else
+          echo "Adding Android platform..."
+          npx cap add android
+        fi
 
     - name: Sync Capacitor to Android
-      run: |
-        echo "=== Syncing to Android ==="
-        npx cap sync android --verbose
-        echo "=== Android structure after sync ==="
-        ls -la android/
-        find android -name "gradlew" || echo "gradlew still not found"
+      run: npx cap sync android
 
-    - name: Grant execute permission for gradlew
+    - name: Ensure Gradle wrapper exists
       run: |
-        if [ -f android/gradlew ]; then
-          chmod +x android/gradlew
-          echo "✓ gradlew permissions set"
-        else
-          echo "✗ gradlew not found at android/gradlew"
-          echo "=== Full android directory tree ==="
-          find android -type f | head -50
-          exit 1
+        cd android
+        if [ ! -f gradlew ]; then
+          echo "gradlew not found, generating wrapper..."
+          gradle wrapper
         fi
+        chmod +x gradlew
+        echo "✓ Gradle wrapper ready"
 
     - name: Build APK
       working-directory: ./android
