@@ -43,16 +43,8 @@ jobs:
     - name: Sync Capacitor to Android
       run: npx @capacitor/cli sync android
 
-    - name: Generate Gradle wrapper
-      working-directory: ./android
-      run: gradle wrapper --gradle-version 8.2
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x android/gradlew
-
     - name: Build APK
-      working-directory: ./android
-      run: ./gradlew assembleDebug --stacktrace --no-daemon
+      run: gradle -p android/app assembleDebug --stacktrace --no-daemon
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
