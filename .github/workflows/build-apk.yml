@@ -40,31 +40,15 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
-    - name: Install Capacitor CLI
-      run: npm install -g @capacitor/cli
-
-    - name: Setup Android platform
-      run: |
-        if [ -d "android" ]; then
-          echo "Android directory exists in repo, updating..."
-          npx cap update android
-        else
-          echo "Adding Android platform..."
-          npx cap add android
-        fi
-
     - name: Sync Capacitor to Android
       run: npx cap sync android
 
-    - name: Ensure Gradle wrapper exists
-      run: |
-        cd android
-        if [ ! -f gradlew ]; then
-          echo "gradlew not found, generating wrapper..."
-          gradle wrapper
-        fi
-        chmod +x gradlew
-        echo "✓ Gradle wrapper ready"
+    - name: Generate Gradle wrapper
+      working-directory: ./android
+      run: gradle wrapper --gradle-version 8.2
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x android/gradlew
 
     - name: Build APK
       working-directory: ./android
