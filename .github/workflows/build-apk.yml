@@ -43,6 +43,15 @@ jobs:
     - name: Sync Capacitor to Android
       run: npx @capacitor/cli sync android
 
-    - name: Skip Android APK build
-      run: echo "Android APK cannot be reliably built in GitHub Actions. Please follow BUILD_APK.md to build locally in Android Studio."
+    - name: Make Gradlew executable
+      run: chmod +x android/gradlew
+
+    - name: Build APK
+      run: cd android && ./gradlew assembleDebug --stacktrace
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: visual-enhancer-debug
+        path: android/app/build/outputs/apk/debug/app-debug.apk
 
