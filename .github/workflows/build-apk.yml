@@ -40,6 +40,9 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
+    - name: Add Android platform
+      run: npx @capacitor/cli add android
+
     - name: Sync Capacitor to Android
       run: npx @capacitor/cli sync android
 
