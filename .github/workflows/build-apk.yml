@@ -52,8 +52,19 @@ jobs:
     - name: Sync Capacitor to Android
       run: npx cap sync android
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x android/gradlew
+    - name: Verify Android setup
+      run: |
+        echo "Checking Android directory structure..."
+        ls -la android/
+        echo "Checking for gradlew..."
+        if [ -f android/gradlew ]; then
+          echo "✓ gradlew found"
+          chmod +x android/gradlew
+        else
+          echo "✗ gradlew not found, listing gradle wrapper directory..."
+          ls -la android/gradle/wrapper/ || echo "Wrapper directory not found"
+          exit 1
+        fi
 
     - name: Build APK
       working-directory: ./android
