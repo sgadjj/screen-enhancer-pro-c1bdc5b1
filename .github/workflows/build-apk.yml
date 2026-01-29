@@ -2,8 +2,8 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]   # يعمل على فرع main
+  workflow_dispatch:      # يسمح بتشغيله يدويًا
 
 jobs:
   build:
