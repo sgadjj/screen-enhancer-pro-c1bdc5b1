@@ -1,0 +1,46 @@
+# Workflow لنشر أي مشروع ثابت على GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # يشغل كل مرة تدفع تغييرات على الفرع main
+  push:
+    branches: ["main"]
+  # يسمح بتشغيله يدويًا من تبويب Actions
+  workflow_dispatch:
+
+# صلاحيات GitHub Token للنشر
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# السماح بتشغيل نشر واحد فقط في نفس الوقت
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # نسخ المستودع على جهاز العمل
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # إعداد GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # رفع كل ملفات المشروع
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      # نشر المشروع على GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
